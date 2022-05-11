@@ -7,7 +7,7 @@
 #ifndef NAPLO_H_INCLUDED
 #define NAPLO_H_INCLUDED
 
-#include "jatekos.h"
+#include "jatekos.hpp"
 #include "stat.h"
 
 class Naplo{
@@ -15,6 +15,8 @@ class Naplo{
     size_t size; ///< A napló maximális mérete (egyszer állítható)
     size_t n; ///< A naplóban az adattal feltöltött hely
     Stat* stats[]; ///< A statisztikákat tároló kollekció
+
+	//TODO: stats dinamikus tömb legyen!
 
 	/**
 	 * benneVan - Eldönti, hogy benne van-e egy játékos már a naplóban.
@@ -64,7 +66,7 @@ public:
     size_t index(const Jatekos& j);
 
 	///Destruktor
-	~Naplo() { urites(); delete[] stats; }
+	~Naplo() { urites(); /*delete[] stats;*/ }
 };
 
 /**

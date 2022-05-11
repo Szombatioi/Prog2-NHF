@@ -8,7 +8,7 @@
 #ifndef JATEK_H_INCLUDED
 #define JATEK_H_INCLUDED
 
-#include "targy.h"
+#include "targy.hpp"
 
 class Jatek{
 	//Privát adattagok

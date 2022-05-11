@@ -8,7 +8,7 @@
 #define STAT_H_INCLUDED
 
 #include "string5.h"
-#include "jatekos.h"
+#include "jatekos.hpp"
 
 /**
 * A Statisztika osztály.

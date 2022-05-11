@@ -6,12 +6,10 @@
 #include "gtest_lite.h"
 #include "jatek.h"
 #include "naplo.h"
-#include "ko.h"
-#include "papir.h"
-#include "ollo.h"
+#include "ko.hpp"
+#include "papir.hpp"
+#include "ollo.hpp"
 using namespace std;
-
-#define TEST
 
 /**
 * test1 - betöltés fájlból
@@ -73,7 +71,7 @@ void test3(){
 int main()
 {
 
-//#ifndef TEST
+
 //    setlocale(LC_ALL, "hun"); ///CodeBlocksnál a konzol hibásan jeleníti meg a betûket, tesztelésre javasolt a Visual Studio használata
 //    try{
 //        int n;
@@ -93,10 +91,7 @@ int main()
 //        }
 //    } catch(std::exception& e) {cout << e.what() << endl;}
 //    catch(...) {cout << "Nagy a baj" << endl;}
-//#endif // TEST
-//#ifdef TEST
-//
-//#endif // TEST
 
+    std::cout << "Hello" << std::endl;
     return 0;
 }
