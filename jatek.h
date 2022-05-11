@@ -8,8 +8,10 @@
 #ifndef JATEK_H_INCLUDED
 #define JATEK_H_INCLUDED
 
-class Game{
-	///Privát adattagok
+#include "targy.h"
+
+class Jatek{
+	//Privát adattagok
 	bool gyoz(const Targy& lhs, const Targy& rhs) const;
 public:
 	///Konstruktor - Ez hozza létre a naplót
@@ -19,13 +21,13 @@ public:
 	 * load - Betölti a naplóban tárolt játékosokat a naplo.txt fájlból
 	 * Ha nem létezik, üres lesz a Napló
 	 * */
-	void load() {}
+	void load(const char* file) {}
 
 	/**
 	 * save - Elmenti a napló adatait a naplo.txt fájlba (felülírja)
 	 * Ha nem létezik a txt fájl, generál egyet.
 	 * */
-	void save() {}
+	void save(const char* file) {}
 
 	/**
 	 * demonstrate - Demonstrál egy mérkőzést.

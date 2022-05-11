@@ -1,6 +1,6 @@
 /**
     \file ollo.h
-    Ebbe a fájlba kerül az olló alosztály deklarációi, inline tagfüggvényei.
+    Ebbe a fÃ¡jlba kerÃ¼l az ollÃ³ alosztÃ¡ly deklarÃ¡ciÃ³i, inline tagfÃ¼ggvÃ©nyei.
 */
 
 #ifndef OLLO_H_INCLUDED
@@ -10,20 +10,29 @@
 using std::cout;
 using std::endl;
 
+/**
+* Az OllÃ³ osztÃ¡ly.
+* A kÅ‘ legyÅ‘zi, viszont a papÃ­rt ez gyÅ‘zi le.
+*/
 class Ollo : public Targy{
-	///privát adattagok
+    targyak Counter; ///< A tÃ¡rgy, ami legyÅ‘zi ezt a tÃ¡rgyat
+	targyak Self; ///< HivatkozÃ¡s a sajÃ¡t tÃ­pusÃ¡ra, mÃ©rkÅ‘zÃ©seknÃ©l lesz fontos
 public:
 	/**
 	 * Konstruktor
-	 * @param nev - A tárgy neve, az ¿sosztály ctor-jának hívásához kell
+	 * @param nev - A tÃ¡rgy neve, kiÃ­rÃ¡sokhoz fog kelleni
 	 **/
-	Ollo(const String& nev) {}
+	Ollo(const String& nev) : Targy(nev), Counter(KO), Self(OLLO) {}
 
-	targyak getTargy() const;
-	targyak getCounter() const;
+	/**
+	* getTargy - visszaadja a tÃ¡rgyat
+	*/
+	targyak getTargy() const { return Self; }
 
-	///Destruktor
-	~Ollo() {}
+	/**
+	* getCounter - visszaadja azt a tÃ¡rgyat, ami legyÅ‘zi
+	*/
+	targyak getCounter() const { return Counter; }
 };
 
 #endif // OLLO_H_INCLUDED

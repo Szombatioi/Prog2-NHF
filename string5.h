@@ -11,7 +11,7 @@
 #include <iostream>
 
 #ifndef MEMTRACE
-//#error "definialja projekt szinten a MEMTARCE makrot!"
+#error "definialja projekt szinten a MEMTARCE makrot!"
 #endif // MEMTRACE
 
 /**
@@ -47,9 +47,11 @@ public:
     ///+ operator
     String operator+(const String& str) const;
     ///[] operator
-    const char& operator[](int i) const;
+    const char& operator[](size_t i) const;
     ///[] operator
-    char& operator[](int i);
+    char& operator[](size_t i);
+    ///== operator
+    bool operator==(const String& str) const;
     ///Dtor
     ~String();
 

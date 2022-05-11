@@ -1,6 +1,6 @@
 /**
     \file papir.h
-    Ebbe a fájlba kerül a papír alosztály deklarációi, inline tagfüggvényei.
+    Ebbe a fÃ¡jlba kerÃ¼l a papÃ­r alosztÃ¡ly deklarÃ¡ciÃ³i, inline tagfÃ¼ggvÃ©nyei.
 */
 
 
@@ -12,20 +12,29 @@
 using std::cout;
 using std::endl;
 
+/**
+* A PapÃ­r osztÃ¡ly.
+* Az ollÃ³ legyÅ‘zi, viszont az kÃ¶vet ez gyÅ‘zi le.
+*/
 class Papir : public Targy{
-	///privát adattagok
+    targyak Counter; ///< A tÃ¡rgy, ami legyÅ‘zi ezt a tÃ¡rgyat
+	targyak Self; ///< HivatkozÃ¡s a sajÃ¡t tÃ­pusÃ¡ra, mÃ©rkÅ‘zÃ©seknÃ©l lesz fontos
 public:
 	/**
 	 * Konstruktor
-	 * @param nev - A tárgy neve, az ¿sosztály ctor-jának hívásához kell
+	 * @param nev - A tÃ¡rgy neve, kiÃ­rÃ¡sokhoz fog kelleni
 	 * */
-	Papir(const String& nev) : Targy(nev) {}
-	
-	targyak getTargy() const;
-	targyak getCounter() const;
+	Papir(const String& nev) : Targy(nev), Counter(OLLO), Self(PAPIR) {}
 
-	///Destruktor
-	~Papir() {}
+	/**
+	* getTargy - visszaadja a tÃ¡rgyat
+	*/
+	targyak getTargy() const { return Self; }
+
+	/**
+	* getCounter - visszaadja azt a tÃ¡rgyat, ami legyÅ‘zi
+	*/
+	targyak getCounter() const { return Counter; }
 };
 
 #endif // PAPIR_H_INCLUDED

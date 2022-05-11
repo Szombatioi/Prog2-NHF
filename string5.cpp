@@ -55,12 +55,12 @@ String& String::operator=(const String& str) {
 }
 
 ///[] operátorok: egy megadott indexű elem REFERENCIÁJÁVAL térnek vissza
-const char& String::operator[](int i) const {
+const char& String::operator[](size_t i) const {
     if(i < 0 || i >= len) throw "Indexelesi hiba!"; /// indexhiba esetén const char * kivételt dob!
     return pData[i];
 }
 
-char& String::operator[](int i) {
+char& String::operator[](size_t i) {
     if(i < 0 || i >= len) throw "Indexelesi hiba!";
     return pData[i];
 }
@@ -88,8 +88,14 @@ String String::operator+(const String& str) const {
 }
 
 ///char-hoz String-et ad
-String operator+(char c, const String& str) {
+String operator+(char c, const String& str){
     return String(c) + str;
+}
+
+
+///== operator
+bool String::operator==(const String& str) const{
+    return strncmp(this->c_str(), str.c_str(), this->size());
 }
 
 /// << operator, ami kiír az ostream-re

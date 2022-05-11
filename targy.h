@@ -8,28 +8,23 @@
 #define TARGY_H_INCLUDED
 
 #include "string5.h"
-using std::cout;
-using std::endl;
 
 ///Ezeket a tárgyakat lehet használni, bővíthető!
 enum targyak{
-	KO, PAPIR, OLLO
+    KO, PAPIR, OLLO
 };
 
 class Targy{
-	///Privát adattagok
+	//Privát adattagok
+	String nev; ///< A tárgy neve, mérkőzések kiírásához kell
 public:
 	/**
 	 * Konstruktor
 	 * @param nev - a tárgy neve, kiírásokhoz kell majd
 	 * */
-	Targy(const String& nev) : nev(nev) {}
-
-	virtual targyak getTargy() const;
-	virtual targyak getCounter() const;
-
-	///Destruktor
-	virtual ~Targy() {}
+	Targy(const String& nev) {}
+	virtual targyak getTargy() const {}
+	virtual targyak getCounter() const {}
 };
 
 #endif // TARGY_H_INCLUDED

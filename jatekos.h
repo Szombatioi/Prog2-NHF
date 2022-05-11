@@ -8,30 +8,44 @@
 
 #include "string5.h"
 #include "targy.h"
-using std::cout;
-using std::endl;
 
+/**
+* A Játékos osztály.
+* Egy játékos adatait tárolja (név, használt tárgy).
+*/
 class Jatekos{
-	///Privát adattagok
+	//Privát adattagok
+	String nev; ///< A játékos neve
+    Targy* targy; ///< A játékos tárgya
 public:
 	/**
 	 * Konstruktor
 	 * @param nev - A játékos neve
 	 * @param *t - a tárgy, amit használ
 	 * */
-       	Jatekos(String nev, Targy *t){}
+    Jatekos(String nev, Targy *t) : nev(nev), targy(t) {}
 
 	/**
-	 * setItem - beállítja a (létező) játékos tárgyát
+	 * setItem - beállítja a (már létező) játékos tárgyát
 	 * @param *t - a tárgy, amit beállítunk neki
 	 * */
-	void setItem(Targy *t) {}
+	void setItem(Targy *t) { targy = t; }
 
-	String getNev() const;
-	targyak  getTargy() const;
+	/**
+	* getNev - Visszaadja a játékos nevét
+	*/
+	String getNev() const {return nev;}
+	/**
+	* getTargy - Visszaadja a játékos tárgyát
+	*/
+	targyak getTargy() const {return targy->getTargy();}
+
+	bool operator==(const Jatekos& j) const{
+        return nev==j.getNev();
+	}
 
 	///Destruktor
-	~Jatekos() {}
+	~Jatekos() { delete targy; }
 };
 
 #endif // JATEKOS_H_INCLUDED
