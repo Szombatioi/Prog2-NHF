@@ -18,9 +18,9 @@ class Ollo : public Targy{
 public:
 	/**
 	 * Konstruktor
-	 * @param nev - A tárgy neve, kiírásokhoz fog kelleni
-	 **/
-	Ollo(const String& nev) : Targy(nev), Counter(KO), Self(OLLO) {}
+	 * Eltérő nevet meg tárgy típusokat állít be, mint a Tárgy osztály más utódai
+	 * */
+	Ollo() : Targy("Olló"), Counter(KO), Self(OLLO) {}
 
 	/**
 	* getTargy - visszaadja a tárgyat
@@ -31,8 +31,6 @@ public:
 	* getCounter - visszaadja azt a tárgyat, ami legyőzi
 	*/
 	targyak getCounter() const { return Counter; }
-
-	~Ollo() {}
 };
 
 #endif // OLLO_HPP_INCLUDED

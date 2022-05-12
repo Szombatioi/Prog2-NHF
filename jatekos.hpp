@@ -54,6 +54,10 @@ public:
 	 * */
 	Targy* getTargy() const {return targy;}
 
+	void frissit(char T, bool nyert){
+        stat.frissit(T, nyert);
+	}
+
 	/**
 	 * A játékosok összehasonlításához == operator overload
 	 * @param j A másik játékos

@@ -22,9 +22,9 @@ class Ko : public Targy{
 public:
 	/**
 	 * Konstruktor
-	 * @param nev - A tárgy neve, kiírásokhoz fog kelleni
+	 * Eltérő nevet meg tárgy típusokat állít be, mint a Tárgy osztály más utódai
 	 * */
-	Ko(String nev) : Targy(nev), Counter(PAPIR), Self(KO) {}
+	Ko() : Targy("Kő"), Counter(PAPIR), Self(KO) {}
 
 	/**
 	* getTargy - visszaadja a tárgyat
@@ -35,8 +35,6 @@ public:
 	* getCounter - visszaadja azt a tárgyat, ami legyőzi
 	*/
 	targyak getCounter() const { return Counter; }
-
-	~Ko() {}
 };
 
 #endif // KO_HPP_INCLUDED

@@ -3,7 +3,6 @@
 * Ebbe a fájlba kerül a statisztikákat tároló napló osztály tagfüggvényeinek megvalósítása.
 */
 
-//#include <iostream>
 #include "naplo.h"
 
 /**
@@ -13,9 +12,12 @@
 * @return Ha benne van, igaz, ellenkező esetben hamis.
 **/
 bool Naplo::benneVan(const Jatekos& j) const{
-    for(size_t i = 0; i < n; i++)
-        if(j == *stats[i])
-            return true;
+    for(size_t i = 0; i < n; i++){
+        if(j == *stats[i]){
+            return true;    ///< Ha a napló valamelyik eleme megegyezik ezzel a játékossal, akkor benne van
+        }
+    }
+
     return false;
 }
 
@@ -25,23 +27,17 @@ bool Naplo::benneVan(const Jatekos& j) const{
  * @param j A betenni kívánt játékos
  * */
 void Naplo::hozzaad(Jatekos* j){
-    if(n>=size) throw "Megtelt a napló!"; // delete j
-    if(!benneVan(*j))
-        stats[n++] = j;
-}
-
-/**
-* index - egy játékos helyét adja meg a tömbben
-* Ha nincs benne, -1-gyel tér vissza
-* @param j - A keresett játékos
-*/
-size_t Naplo::index(const Jatekos& j){
-    for(size_t i = 0; i < n; i++){
-        if(*stats[i] == j){
-            return i;
+    if(n>=size){ ///< Ha megtelik a napló...
+        Jatekos** temp = new Jatekos*[(size+=10)]; ///< 10-zel megnöveljük a napló méretét
+        for(size_t i = 0; i < n; i++){
+            temp[i] = stats[i]; ///< Átmásoljuk az elemeket
         }
+        delete[] stats; ///< A régi tömböt töröljük
+        stats = temp; ///< Átállítjuk a pointert
     }
-    return -1;
+    if(!benneVan(*j))
+        stats[n++] = j; ///< Ha nincs benne a játékos és nincs tele a napló, akkor csak hozzáteszi
+
 }
 
 /**
@@ -51,11 +47,9 @@ size_t Naplo::index(const Jatekos& j){
  * */
 void Naplo::frissit(Jatekos* j, bool nyert){
     if(!benneVan(*j)){
-        std::cout << "NINCS BENNE??\n";
-        hozzaad(j);
+        hozzaad(j); ///< Ha nincs benne a játékos, akkor hozzáveszi
     }
-    //j->getStat().frissit(j->getTargy()->getBetu(), nyert);
-    std::cout << "Magically frissült\n";
+    j->frissit(j->getTargy()->getBetu(), nyert);    ///< Frissíti a statisztikát
 }
 
 /**
@@ -67,18 +61,20 @@ void Naplo::urites(){
 }
 
 /**
-* sort - növekvő sorrendbe rendezi a tömb elemeit
+* sort - rendezi a tömböt növekvő sorrendbe
+* A top 10 kiírása előtt mindig rendez.
+* A selection sort elvén alapszik.
 */
 void Naplo::sort(){
-    size_t min;
+    size_t max;
     for(size_t i = 0; i < n-1; i++){
-        min = i;
+        max = i;
         for(size_t j = i+1; j < n; j++){
-            if(stats[j]->getStat().getGyozelmek() < stats[min]->getStat().getGyozelmek()) min = j;
+            if(stats[j]->getStat().getGyozelmek() > stats[max]->getStat().getGyozelmek()) max = j;
         }
-        if(min != i){
-            Jatekos* temp = stats[min];
-            stats[min] = stats[i];
+        if(max != i){
+            Jatekos* temp = stats[max];
+            stats[max] = stats[i];
             stats[i] = temp;
         }
     }
@@ -87,9 +83,11 @@ void Naplo::sort(){
 /**
  * topkiir - Kiírja a 10 legjobb játékos statisztikáját növekvő sorrendben.
  * Először rendezi a listát növekvő sorrendbe a sort() függvénnyel.
+ * @param os - A stream, amire ki akarunk írni
  * */
 void Naplo::topkiir(std::ostream& os){
-    Naplo::sort();
+    sort(); ///< Rendezés
+    os << "A top 10 legjobb játékos:\n";
     size_t max = (n >= 10) ? 10 : n;
     for(size_t i = 0; i < max; i++)
         os << *stats[i] << "\n";

@@ -19,9 +19,9 @@ class Papir : public Targy{
 public:
 	/**
 	 * Konstruktor
-	 * @param nev - A tárgy neve, kiírásokhoz fog kelleni
+	 * Eltérő nevet meg tárgy típusokat állít be, mint a Tárgy osztály más utódai
 	 * */
-	Papir(const String& nev) : Targy(nev), Counter(OLLO), Self(PAPIR) {}
+	Papir() : Targy("Papír"), Counter(OLLO), Self(PAPIR) {}
 
 	/**
 	* getTargy - visszaadja a tárgyat
@@ -32,8 +32,6 @@ public:
 	* getCounter - visszaadja azt a tárgyat, ami legyőzi
 	*/
 	targyak getCounter() const { return Counter; }
-
-	~Papir() {}
 };
 
 #endif // PAPIR_HPP_INCLUDED

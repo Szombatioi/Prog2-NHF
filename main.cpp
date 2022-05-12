@@ -92,15 +92,29 @@ int main()
 //    catch(...) {cout << "Nagy a baj" << endl;}
 
     try{
-        Naplo n(100);
-        Jatekos* p = new Jatekos(String("Peter"), new Ko("Kő"));
+        Naplo n(1);
+        Jatekos* p = new Jatekos(String("Peter"), new Ko());    //naplo torli ot!!
         n.hozzaad(p);
         n.topkiir(std::cout);
-        std::cout << "Új kör\n";
+        std::cout << "uj kor\n";
         n.frissit(p, true);
         n.topkiir(std::cout);
-    } catch(...){
-        std::cout << "O-ó baj van\n";
+        std::cout << "uj kor\n";
+        n.frissit(p, false);
+        n.topkiir(std::cout);
+
+        Jatekos* p2 = new Jatekos(String("Andras"), new Ko());
+        n.hozzaad(p2);
+        n.frissit(p2, true);
+        n.frissit(p2, true);
+        n.topkiir(std::cout);
+
+    }catch(const char* s) {
+        std::cout << s << std::endl;
     }
+    catch(...){
+        std::cout << "Error??" << "\n";
+    }
+
     return 0;
 }

@@ -95,7 +95,7 @@ String operator+(char c, const String& str){
 
 ///== operator
 bool String::operator==(const String& str) const{
-    return strncmp(this->c_str(), str.c_str(), this->size());
+    return strncmp(this->c_str(), str.c_str(), this->size()) == 0;
 }
 
 /// << operator, ami kiír az ostream-re

@@ -8,15 +8,24 @@
 #define NAPLO_H_INCLUDED
 
 #include "jatekos.hpp"
-//#include "stat.h"
 
+/**
+* BOOL - saját logikai típus mérkőzések lezárására.
+* TRUE az igaz, FALSE a hamis és DRAW a döntetlen
+*/
+enum BOOL {
+    DRAW = -1, TRUE = 1, FALSE = 0
+};
+
+
+/**
+* Naplo osztály - A játékosok statisztikáit tároljuk benne
+*/
 class Naplo{
     //Privát adattagok
     size_t size; ///< A napló maximális mérete (egyszer állítható)
     size_t n; ///< A naplóban az adattal feltöltött hely
-    Jatekos* *stats; ///< A statisztikákat tároló kollekció
-
-	//TODO: stats dinamikus tömb legyen!
+    Jatekos** stats; ///< A statisztikákat tároló kollekció
 
 	/**
 	 * benneVan - Eldönti, hogy benne van-e egy játékos már a naplóban.
@@ -59,12 +68,9 @@ public:
 	void topkiir(std::ostream& os);
 
 	/**
-	* index - egy játékos helyét adja meg a tömbben
-	* Ha nincs benne, -1-gyel tér vissza
-	* @param j - A keresett játékos
+	* sort - rendezi a tömböt növekvő sorrendbe
+	* A top 10 kiírása előtt mindig rendez.
 	*/
-    size_t index(const Jatekos& j);
-
 	void sort();
 
 	///Destruktor

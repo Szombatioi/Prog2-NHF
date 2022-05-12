@@ -22,10 +22,10 @@ public:
 	 * Konstruktor
 	 * @param nev - a tárgy neve, kiírásokhoz kell majd
 	 * */
-	Targy(const String& nev) {}
+	Targy(const String& nev) : nev(nev) {}
 	virtual targyak getTargy() const = 0;
 	virtual targyak getCounter() const = 0;
-	char getBetu() const {return nev[0];}
+	char getBetu() const { return nev[0]; }
 
 	virtual ~Targy() {}
 };
