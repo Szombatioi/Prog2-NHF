@@ -3,8 +3,8 @@
     Ebbe a fájlba kerül a kő alosztály deklarációi, inline tagfüggvényei.
 */
 
-#ifndef KO_H_INCLUDED
-#define KO_H_INCLUDED
+#ifndef KO_HPP_INCLUDED
+#define KO_HPP_INCLUDED
 
 
 #include "targy.hpp"
@@ -35,6 +35,8 @@ public:
 	* getCounter - visszaadja azt a tárgyat, ami legyőzi
 	*/
 	targyak getCounter() const { return Counter; }
+
+	~Ko() {}
 };
 
-#endif // KO_H_INCLUDED
+#endif // KO_HPP_INCLUDED

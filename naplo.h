@@ -8,13 +8,13 @@
 #define NAPLO_H_INCLUDED
 
 #include "jatekos.hpp"
-#include "stat.h"
+//#include "stat.h"
 
 class Naplo{
     //Privát adattagok
     size_t size; ///< A napló maximális mérete (egyszer állítható)
     size_t n; ///< A naplóban az adattal feltöltött hely
-    Stat* stats[]; ///< A statisztikákat tároló kollekció
+    Jatekos* *stats; ///< A statisztikákat tároló kollekció
 
 	//TODO: stats dinamikus tömb legyen!
 
@@ -31,7 +31,7 @@ public:
 	 * @param size - Megadható a fix tömb mérete.
 	 * */
 	Naplo(size_t siz) : size(siz), n(0) {
-        //stats = new Stat[siz]*;
+        stats = new Jatekos*[size]; ///< Dinamikusan lefoglaljuk a kívánt méretű helyet
 	}
 
 	/**
@@ -39,14 +39,14 @@ public:
 	 * Először megnézi, hogy benne van-e, ha nincs, hozzáadja, ha igen, akkor nem csinál semmit
 	 * @param j A betenni kívánt játékos
 	 * */
-	void hozzaad(const Jatekos& j);
+	void hozzaad(Jatekos* j);
 
 	/**
 	 * frissit - Frissíti a napló tartalmát aszerint, hogy nyert-e az adott játékos vagy sem.
 	 * @param j - A frissítendő játékos
 	 * @param nyert - logikai változó, azt tárolja, hogy nyert-e a játékos vagy vesztett.
 	 * */
-	void frissit(const Jatekos& j, bool nyert);
+	void frissit(Jatekos* j, bool nyert);
 
 	/**
 	 * urites - Törli a napló teljes tartalmát.
@@ -56,7 +56,7 @@ public:
 	/**
 	 * topkiir - Kiírja a 10 legjobb játékos statisztikáját.
 	 * */
-	void topkiir();
+	void topkiir(std::ostream& os);
 
 	/**
 	* index - egy játékos helyét adja meg a tömbben
@@ -65,13 +65,10 @@ public:
 	*/
     size_t index(const Jatekos& j);
 
-	///Destruktor
-	~Naplo() { urites(); /*delete[] stats;*/ }
-};
+	void sort();
 
-/**
-* Kiíratáshoz << operátor overload
-*/
-std::ostream& operator<<(std::ostream& os, const Stat& s);
+	///Destruktor
+	~Naplo() { urites(); delete[] stats; }
+};
 
 #endif // DIARY_H_INCLUDED

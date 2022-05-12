@@ -1,43 +1,43 @@
 /**
 * \file naplo.cpp
-* Ebbe a fájlba kerül a statisztikákat tároló napló osztály tagfüggvényeinek megvalósítása.
+* Ebbe a fÃ¡jlba kerÃ¼l a statisztikÃ¡kat tÃ¡rolÃ³ naplÃ³ osztÃ¡ly tagfÃ¼ggvÃ©nyeinek megvalÃ³sÃ­tÃ¡sa.
 */
 
-#include <iostream>
+//#include <iostream>
 #include "naplo.h"
 
 /**
-* benneVan - Eldönti, hogy benne van-e egy játékos már a naplóban.
-* Privát függvény, csak arra kell, hogy a hozzaad() függvény tudjon dolgozni.
-* @param j - A keresett játékos
-* @return Ha benne van, igaz, ellenkezõ esetben hamis.
+* benneVan - EldÃ¶nti, hogy benne van-e egy jÃ¡tÃ©kos mÃ¡r a naplÃ³ban.
+* PrivÃ¡t fÃ¼ggvÃ©ny, csak arra kell, hogy a hozzaad() fÃ¼ggvÃ©ny tudjon dolgozni.
+* @param j - A keresett jÃ¡tÃ©kos
+* @return Ha benne van, igaz, ellenkezÅ‘ esetben hamis.
 **/
 bool Naplo::benneVan(const Jatekos& j) const{
     for(size_t i = 0; i < n; i++)
-        if(j == stats[i]->getJatekos())
+        if(j == *stats[i])
             return true;
     return false;
 }
 
 /**
- * hozzaad - hozzáad egy új játékost a naplóhoz.
- * Elõször megnézi, hogy benne van-e, ha nincs, hozzáadja, ha igen, akkor nem csinál semmit
- * @param j A betenni kívánt játékos
+ * hozzaad - hozzÃ¡ad egy Ãºj jÃ¡tÃ©kost a naplÃ³hoz.
+ * ElÅ‘szÃ¶r megnÃ©zi, hogy benne van-e, ha nincs, hozzÃ¡adja, ha igen, akkor nem csinÃ¡l semmit
+ * @param j A betenni kÃ­vÃ¡nt jÃ¡tÃ©kos
  * */
-void Naplo::hozzaad(const Jatekos& j){
-    if(n>=size) throw "Megtelt a napló!";
-    if(!benneVan(j))
-        stats[n++] = new Stat(j);
+void Naplo::hozzaad(Jatekos* j){
+    if(n>=size) throw "Megtelt a naplÃ³!"; // delete j
+    if(!benneVan(*j))
+        stats[n++] = j;
 }
 
 /**
-* index - egy játékos helyét adja meg a tömbben
-* Ha nincs benne, -1-gyel tér vissza
-* @param j - A keresett játékos
+* index - egy jÃ¡tÃ©kos helyÃ©t adja meg a tÃ¶mbben
+* Ha nincs benne, -1-gyel tÃ©r vissza
+* @param j - A keresett jÃ¡tÃ©kos
 */
 size_t Naplo::index(const Jatekos& j){
     for(size_t i = 0; i < n; i++){
-        if(stats[i]->getJatekos() == j){
+        if(*stats[i] == j){
             return i;
         }
     }
@@ -45,19 +45,21 @@ size_t Naplo::index(const Jatekos& j){
 }
 
 /**
- * frissit - Frissíti a napló tartalmát aszerint, hogy nyert-e az adott játékos vagy sem.
- * @param j - A frissítendõ játékos
- * @param nyert - logikai változó, azt tárolja, hogy nyert-e a játékos vagy vesztett.
+ * frissit - FrissÃ­ti a naplÃ³ tartalmÃ¡t aszerint, hogy nyert-e az adott jÃ¡tÃ©kos vagy sem.
+ * @param j - A frissÃ­tendÅ‘ jÃ¡tÃ©kos
+ * @param nyert - logikai vÃ¡ltozÃ³, azt tÃ¡rolja, hogy nyert-e a jÃ¡tÃ©kos vagy vesztett.
  * */
-void Naplo::frissit(const Jatekos& j, bool nyert){
-    if(!benneVan(j)){
+void Naplo::frissit(Jatekos* j, bool nyert){
+    if(!benneVan(*j)){
+        std::cout << "NINCS BENNE??\n";
         hozzaad(j);
     }
-
+    //j->getStat().frissit(j->getTargy()->getBetu(), nyert);
+    std::cout << "Magically frissÃ¼lt\n";
 }
 
 /**
- * urites - Törli a napló teljes tartalmát.
+ * urites - TÃ¶rli a naplÃ³ teljes tartalmÃ¡t.
  * */
 void Naplo::urites(){
     for(size_t i = 0; i < n; i++)
@@ -65,19 +67,30 @@ void Naplo::urites(){
 }
 
 /**
-* Kiíratáshoz << operátor overload
-* @param os - A kiíráshoz használt stream
-* @param s - A kiírandó statisztika
+* sort - nÃ¶vekvÅ‘ sorrendbe rendezi a tÃ¶mb elemeit
 */
-std::ostream& operator<<(std::ostream& os, const Stat& s){
-    return os << s.getJatekos().getNev() << " - " << s.getTaktika() << " (" << s.getTaktika().size() << ")";
+void Naplo::sort(){
+    size_t min;
+    for(size_t i = 0; i < n-1; i++){
+        min = i;
+        for(size_t j = i+1; j < n; j++){
+            if(stats[j]->getStat().getGyozelmek() < stats[min]->getStat().getGyozelmek()) min = j;
+        }
+        if(min != i){
+            Jatekos* temp = stats[min];
+            stats[min] = stats[i];
+            stats[i] = temp;
+        }
+    }
 }
 
 /**
- * topkiir - Kiírja a 10 legjobb játékos statisztikáját.
+ * topkiir - KiÃ­rja a 10 legjobb jÃ¡tÃ©kos statisztikÃ¡jÃ¡t nÃ¶vekvÅ‘ sorrendben.
+ * ElÅ‘szÃ¶r rendezi a listÃ¡t nÃ¶vekvÅ‘ sorrendbe a sort() fÃ¼ggvÃ©nnyel.
  * */
-void Naplo::topkiir(){
+void Naplo::topkiir(std::ostream& os){
+    Naplo::sort();
     size_t max = (n >= 10) ? 10 : n;
     for(size_t i = 0; i < max; i++)
-        std::cout << stats[i] << "\n";
+        os << *stats[i] << "\n";
 }

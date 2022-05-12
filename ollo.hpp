@@ -3,13 +3,10 @@
     Ebbe a fájlba kerül az olló alosztály deklarációi, inline tagfüggvényei.
 */
 
-#ifndef OLLO_H_INCLUDED
-#define OLLO_H_INCLUDED
+#ifndef OLLO_HPP_INCLUDED
+#define OLLO_HPP_INCLUDED
 
-#include "string5.h"
 #include "targy.hpp"
-using std::cout;
-using std::endl;
 
 /**
 * Az Olló osztály.
@@ -34,6 +31,8 @@ public:
 	* getCounter - visszaadja azt a tárgyat, ami legyőzi
 	*/
 	targyak getCounter() const { return Counter; }
+
+	~Ollo() {}
 };
 
-#endif // OLLO_H_INCLUDED
+#endif // OLLO_HPP_INCLUDED

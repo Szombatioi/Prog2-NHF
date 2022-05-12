@@ -4,8 +4,8 @@
 */
 
 
-#ifndef TARGY_H_INCLUDED
-#define TARGY_H_INCLUDED
+#ifndef TARGY_HPP_INCLUDED
+#define TARGY_HPP_INCLUDED
 
 #include "string5.h"
 
@@ -25,6 +25,9 @@ public:
 	Targy(const String& nev) {}
 	virtual targyak getTargy() const = 0;
 	virtual targyak getCounter() const = 0;
+	char getBetu() const {return nev[0];}
+
+	virtual ~Targy() {}
 };
 
-#endif // TARGY_H_INCLUDED
+#endif // TARGY_HPP_INCLUDED

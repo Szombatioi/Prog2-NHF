@@ -4,11 +4,10 @@
 */
 #include <iostream>
 #include "gtest_lite.h"
-#include "jatek.h"
+#include "jatekos.hpp"
 #include "naplo.h"
 #include "ko.hpp"
-#include "papir.hpp"
-#include "ollo.hpp"
+#include "memtrace.h"
 using namespace std;
 
 /**
@@ -21,7 +20,7 @@ void test1(){
 //    TEST(Load, "noFile"){
 //        EXPECT_THROW(jatekBetoltes.load("random.txt"), std::exception);
 //    } END
-//
+
 //    TEST(Load, "fileExists"){
 //        EXPECT_NO_THROW(jatekBetoltes.load("naplo.txt"));
 //    } END
@@ -92,6 +91,16 @@ int main()
 //    } catch(std::exception& e) {cout << e.what() << endl;}
 //    catch(...) {cout << "Nagy a baj" << endl;}
 
-    std::cout << "Hello" << std::endl;
+    try{
+        Naplo n(100);
+        Jatekos* p = new Jatekos(String("Peter"), new Ko("Kő"));
+        n.hozzaad(p);
+        n.topkiir(std::cout);
+        std::cout << "Új kör\n";
+        n.frissit(p, true);
+        n.topkiir(std::cout);
+    } catch(...){
+        std::cout << "O-ó baj van\n";
+    }
     return 0;
 }

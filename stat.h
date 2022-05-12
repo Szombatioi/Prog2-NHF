@@ -8,7 +8,6 @@
 #define STAT_H_INCLUDED
 
 #include "string5.h"
-#include "jatekos.hpp"
 
 /**
 * A Statisztika osztály.
@@ -16,19 +15,20 @@
 */
 class Stat{
 	//Privát adattagok
-    Jatekos jatekos; ///< A játékos, akinek az adatait tárolja.
     int gyozelmek; ///< A győzelmi sorozatának száma (lehet negatív is)
     String taktika; ///< A játékos taktikája széria esetén
 public:
 	/**
 	 * Konstruktor
-	 * @param j - A játékos, akinek az adatait tároljuk
 	 * */
-	Stat(const Jatekos& j) : jatekos(j), gyozelmek(0), taktika("") {}
+	Stat() : gyozelmek(0), taktika("") {}
 
-    //int getGyozelmek() const {return gyozelmek;}
-    String getTaktika() const {return taktika;}
-    Jatekos getJatekos() const {return jatekos;}
+    int getGyozelmek() const {return gyozelmek;}
+    
+	/**
+	* getTaktika - visszaadja a játékos taktikáját
+	*/
+	String getTaktika() const {return taktika;}
 
 	/**
 	 * frissit - Frissíti a játékos statisztikáját
@@ -37,5 +37,7 @@ public:
 	 * */
 	void frissit(char T, bool nyert);
 };
+
+
 
 #endif

@@ -4,14 +4,10 @@
 */
 
 
-#ifndef PAPIR_H_INCLUDED
-#define PAPIR_H_INCLUDED
+#ifndef PAPIR_HPP_INCLUDED
+#define PAPIR_HPP_INCLUDED
 
-#include "string5.h"
 #include "targy.hpp"
-
-using std::cout;
-using std::endl;
 
 /**
 * A Papír osztály.
@@ -36,6 +32,8 @@ public:
 	* getCounter - visszaadja azt a tárgyat, ami legyőzi
 	*/
 	targyak getCounter() const { return Counter; }
+
+	~Papir() {}
 };
 
-#endif // PAPIR_H_INCLUDED
+#endif // PAPIR_HPP_INCLUDED
