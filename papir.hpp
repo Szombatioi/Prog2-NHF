@@ -26,7 +26,7 @@ public:
 	/**
 	* getTargy - visszaadja a tárgyat
 	*/
-	targyak getTargy() const { return Self; }
+	targyak getSelf() const { return Self; }
 
 	/**
 	* getCounter - visszaadja azt a tárgyat, ami legyőzi

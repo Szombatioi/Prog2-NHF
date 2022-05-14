@@ -11,7 +11,7 @@
 
 ///Ezeket a tárgyakat lehet használni, bővíthető!
 enum targyak{
-    KO, PAPIR, OLLO
+    KO=1, PAPIR=2, OLLO=3
 };
 
 class Targy{
@@ -23,9 +23,10 @@ public:
 	 * @param nev - a tárgy neve, kiírásokhoz kell majd
 	 * */
 	Targy(const String& nev) : nev(nev) {}
-	virtual targyak getTargy() const = 0;
+	virtual targyak getSelf() const = 0;
 	virtual targyak getCounter() const = 0;
 	char getBetu() const { return nev[0]; }
+	String getNev() const {return nev;}
 
 	virtual ~Targy() {}
 };

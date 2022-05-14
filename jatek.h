@@ -9,6 +9,9 @@
 #define JATEK_H_INCLUDED
 
 #include "targy.hpp"
+#include "ko.hpp"
+#include "papir.hpp"
+#include "ollo.hpp"
 #include "naplo.h"
 #include <fstream>
 
@@ -16,25 +19,22 @@
 * Jatek osztály - Magát a játék főbb vezérlési elemeit tartalmazza
 */
 class Jatek{
-	//Privát adattagok
-	Naplo* naplo; ///< A játékosokat tartalmazó napló
-
 	/**
 	* gyoz - eldönti két tárgy közül, hogy melyik nyer.
 	* Privát függvény, mivel csak a demonstrácknál kell használni.
 	* @param lhs - Az egyik (bal oldali) tárgy
 	* @param rhs - A másik (jobb oldali) tárgy
 	*/
-	BOOL gyoz(const Targy& lhs, const Targy& rhs) const;
+	BOOL gyoz(targyak lhs, targyak rhs) const;
 public:
+    Naplo &naplo; ///< A játékosokat tartalmazó napló
 	/**
 	* Konstruktor
 	* @param n - A (már létrehozott) napló
 	*/
-	Jatek(Naplo* n) {naplo = n;}
+	Jatek(Naplo& n) : naplo(n) {}
 
-	void load() {naplo->load();}
-	void save() {naplo->save();}
+	Targy* getRandomTargy();
 
 	/**
 	 * demonstrate - Demonstrál egy mérkőzést.
@@ -42,6 +42,8 @@ public:
 	 * Frissíti a naplót és a játékosok statisztikáit.
 	 * */
 	void demonstrate();
+
+	void menu(bool& run);
 };
 
 #endif // JATEK_H_INCLUDED

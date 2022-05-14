@@ -46,10 +46,10 @@ String::String(const String& str) {
 ///= operátor
 String& String::operator=(const String& str) {
     if (this != &str) {
-        if(pData != NULL) delete[] pData;
+        delete[] pData;
+        if ((pData = str.pData) == NULL) return *this;
         pData = new char[(len = str.len) + 1];
-        strncpy(pData, str.pData, len);
-        pData[len] = 0;
+        strcpy(pData, str.pData);
     }
     return *this;
 }
@@ -95,7 +95,8 @@ String operator+(char c, const String& str){
 
 ///== operator
 bool String::operator==(const String& str) const{
-    return strncmp(this->c_str(), str.c_str(), this->size()) == 0;
+    int len = this->size() > str.size() ? size() : str.size();
+    return strncmp(this->c_str(), str.c_str(), len) == 0;
 }
 
 /// << operator, ami kiír az ostream-re
@@ -106,3 +107,21 @@ std::ostream& operator<<(std::ostream& os, const String& str){
     return os;
 }
 
+/// >> operator, ami beolvas az istreamről egy szót
+std::istream& operator>>(std::istream& is, String& s0) {
+    unsigned char ch;
+    s0 = String("");
+	std::ios_base::fmtflags fl = is.flags();
+	is.setf(std::ios_base::skipws);
+    while (is >> ch) {
+	    is.unsetf(std::ios_base::skipws);
+        if (isspace(ch)) {
+            is.putback(ch);
+            break;
+        } else {
+            s0 = s0 + ch;
+        }
+    }
+	is.setf(fl);
+    return is;
+}

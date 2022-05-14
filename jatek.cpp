@@ -1,30 +1,120 @@
 /**
  * \file jatek.cpp
- * Itt val�sulnak meg a m�rk�z�sek demonstr�l�s�ra haszn�lt jatek oszt�ly tagf�ggv�nyei.
- * Ebben a f�jlban vannak a f�ggv�nyek megval�s�t�sai.
+ * Itt valósulnak meg a mérkõzések demonstrálására használt jatek osztály tagfüggvényei.
+ * Ebben a fájlban vannak a függvények megvalósításai.
  * */
 
 #include "jatek.h"
 
 /**
-* gyoz - eld�nti k�t t�rgy k�z�l, hogy melyik nyer.
-* Priv�t f�ggv�ny, mivel csak a demonstr�ci�kn�l kell haszn�lni.
+* gyoz - eldönti két tárgy közül, hogy melyik nyer.
+* Privát függvény, mivel csak a demonstrációknál kell használni.
 */
-BOOL Jatek::gyoz(const Targy& lhs, const Targy& rhs) const{
-    if(lhs.getTargy() == rhs.getTargy()) return DRAW; ///< Azonos t�rgyak
-    else if(lhs.getTargy() == KO && rhs.getTargy() == PAPIR) return FALSE; ///< KO vs. PAPIR
-    else if(lhs.getTargy() == KO && rhs.getTargy() == OLLO) return TRUE; ///< KO vs. OLLO
-    else if(lhs.getTargy() == PAPIR && rhs.getTargy() == OLLO) return FALSE; ///< PAPIR vs. OLLO
-    else if(lhs.getTargy() == PAPIR && rhs.getTargy() == KO) return TRUE; ///< PAPIR vs. KO
-    else if(lhs.getTargy() == OLLO && rhs.getTargy() == PAPIR) return TRUE; ///< OLLO vs. PAPIR
+BOOL Jatek::gyoz(targyak lhs, targyak rhs) const{
+    if(lhs == rhs) return DRAW; ///< Azonos tárgyak
+    else if(lhs == KO && rhs == PAPIR) return FALSE; ///< KO vs. PAPIR
+    else if(lhs == KO && rhs == OLLO) return TRUE; ///< KO vs. OLLO
+    else if(lhs == PAPIR && rhs == OLLO) return FALSE; ///< PAPIR vs. OLLO
+    else if(lhs == PAPIR && rhs == KO) return TRUE; ///< PAPIR vs. KO
+    else if(lhs == OLLO && rhs == PAPIR) return TRUE; ///< OLLO vs. PAPIR
     else return FALSE; ///< OLLO vs. KO
 }
 
+
+Targy* Jatek::getRandomTargy(){
+    int num = rand() % 3 + 1;
+    if(num == 1) return new Ko();
+    else if(num == 2) return new Papir();
+    else return new Ollo();
+}
+
 /**
- * demonstrate - Demonstr�l egy m�rk�z�st.
- * Bek�ri mindk�t j�t�kos nev�t, esetlegesen felveszi �ket a nyilv�ntart�sba.
- * Friss�ti a napl�t �s a j�t�kosok statisztik�it.
+ * demonstrate - Demonstrál egy mérkőzést.
+ * Bekéri mindkét játékos nevét, esetlegesen felveszi őket a nyilvántartásba.
+ * Frissíti a naplót és a játékosok statisztikáit.
  * */
 void Jatek::demonstrate(){
+    std::cout << "Első játékos: ";
+    String player1, player2;
+    std::cin >> player1;
+    Jatekos *lhs = new Jatekos(player1, getRandomTargy());
+    naplo.hozzaad(lhs);
+    std::cout << "Második játékos: ";
+    std::cin >> player2;
+    if(player2 == player1) throw "Nem játszhatunk önmagunkkal!";
+    Jatekos *rhs = new Jatekos(player2, getRandomTargy());
+    naplo.hozzaad(rhs);
 
+    std::cout << lhs->getNev() << " " << lhs->getTargy()->getNev() << " vs. " << rhs->getNev() << " " << rhs->getTargy()->getNev() << std::endl;
+
+    BOOL gy = gyoz(lhs->getTargy()->getSelf(), rhs->getTargy()->getSelf());
+
+    if(gy == TRUE){
+        naplo.frissit(lhs, true);
+        naplo.frissit(rhs, false);
+        std::cout << *lhs << " nyert!\n";
+    }
+    else if(gy == FALSE){
+        naplo.frissit(lhs, false);
+        naplo.frissit(rhs, true);
+        std::cout << *rhs << " nyert!\n";
+    }
+    else{
+        std::cout << "Nincs nyertes!\n";
+    }
+}
+
+void clearConsole(){
+    #if defined(__unix__) || defined(__linux__)
+    system("clear");
+    #elif defined(_WIN32) || defined(_WIN64)
+    system("cls");
+    #endif // _WIN32
+}
+
+void Jatek::menu(bool& run){
+    std::cout << "1. Mérkőzés levezénylése\n2. Top 10 legjobb játékos kiírása\n3. Napló ürítése\n4. Játékos felvétele\n5. Visszatöltés fájlból\n6. Mentés\n7. Képernyő tisztítása\n9. Kilépés" << std::endl;
+    int valasztas;
+    while(!(std::cin >> valasztas)){
+        std::cin.clear();
+        std::cin.ignore(100, '\n');
+        std::cout << "Hibás érték! Egész számot adjon meg!\n";
+    }
+    std::cin.ignore(100, '\n');
+    switch(valasztas){
+    case 1: ///< Játék levezénylése
+        demonstrate();
+        break;
+    case 2: ///< Top 10 legjobb játékos kiírása
+        naplo.topkiir();
+        break;
+    case 3: ///< Napló ürítése
+        naplo.urites();
+        break;
+    case 4: ///< Játékos felvétele
+        {
+            std::cout << "Játékos neve: ";
+            String tempStr;
+            std::cin >> tempStr;
+            Jatekos *tmp = new Jatekos(tempStr, NULL);
+            naplo.hozzaad(tmp);
+            break;
+        }
+    case 5: ///< Visszatöltés fájlból
+        naplo.load();
+        break;
+    case 6: ///< Mentés
+        naplo.save();
+        break;
+    case 7: ///< Képernyő tisztítása
+        clearConsole();
+        break;
+    case 9: ///< Kilépés
+        run = false;
+        break;
+    default:
+        std::cout << "Hibás érték!\n";
+        break;
+    }
+    std::cout << "----------------------\n";
 }

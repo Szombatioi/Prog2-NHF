@@ -7,26 +7,73 @@
 #include <iostream>
 #include <fstream>
 
+
+/**
+* index - egy játékos helyét adja meg a tömbben
+* Ha nincs benne, -1-gyel tér vissza
+* @param j - A keresett játékos
+*/
+size_t Naplo::index(const Jatekos& j){
+    for(size_t i = 0; i < n; i++){
+        if(*stats[i] == j){
+            return i;
+        }
+    }
+    return -1;
+}
+
 /**
  * load - Betölti a naplóban tárolt játékosokat a naplo.txt fájlból
  * Ha nem létezik, üres lesz a Napló
  * */
-void Naplo::load(){
-    std::ifstream loadFile("naplo.txt");
-    if(loadFile.fail()) throw "Nem letezik a naplo.txt!";
+bool Naplo::load(){
+    std::ifstream loadFile;
+    loadFile.open("naplo.txt");
+    if(!loadFile.is_open()) throw "Nem letezik a naplo.txt!";
+
+    size_t len;
+    loadFile >> len;
+    if(len==0){
+        std::cout << "Üres a fájl.\n";
+        loadFile.close();
+        return false;
+    }
+
+    urites();
+    delete[] stats;
+    stats = new Jatekos*[(size = len)];
+
+    String nev, taktika;
+    for(n = 0; n < len; n++){
+        loadFile >> nev;
+        loadFile >> taktika;
+        std::cout << nev << " " << taktika << "\n";
+        Jatekos* tmp = new Jatekos(nev, NULL);
+        stats[n] = tmp;
+        if(taktika == "-"){
+            stats[n]->setStat("");
+        }
+        else stats[n]->setStat(taktika);
+    }
     loadFile.close();
+    std::cout << "Adatok betöltve\n";
+    return true;
 }
 
 /**
  * save - Elmenti a napló adatait a naplo.txt fájlba (felülírja)
  * Ha nem létezik a txt fájl, generál egyet.
  * */
-void Naplo::save(){
+bool Naplo::save(){
+    sort();
     std::ofstream saveFile("naplo.txt");
+    if(saveFile.fail()) return false;
     saveFile << n << "\n";
     for(size_t i = 0; i < n; i++)
-        saveFile << *stats[i] << "\n";
+        saveFile << stats[i]->getNev() << " " << stats[i]->getStat().getTaktika() << "\n";
     saveFile.close();
+    std::cout << "Mentve\n";
+    return true;
 }
 
 
@@ -53,16 +100,26 @@ bool Naplo::benneVan(const Jatekos& j) const{
  * */
 void Naplo::hozzaad(Jatekos* j){
     if(n>=size){ ///< Ha megtelik a napló...
-        Jatekos** temp = new Jatekos*[(size+=10)]; ///< 10-zel megnöveljük a napló méretét
+        Jatekos** temp = new Jatekos*[(size += 10)]; ///< 10-zel megnöveljük a napló méretét
+        if(temp == NULL) throw "Nem bővíthető a napló!";
         for(size_t i = 0; i < n; i++){
             temp[i] = stats[i]; ///< Átmásoljuk az elemeket
         }
         delete[] stats; ///< A régi tömböt töröljük
         stats = temp; ///< Átállítjuk a pointert
     }
-    if(!benneVan(*j))
+    if(!benneVan(*j)){
         stats[n++] = j; ///< Ha nincs benne a játékos és nincs tele a napló, akkor csak hozzáteszi
-
+        std::cout << "Játékos felvéve\n";
+    }
+    else{
+        size_t idx = index(*j);
+        Stat tempStat = stats[idx]->getStat();
+        delete stats[idx];
+        stats[idx] = j;
+        stats[idx]->setTargy(j->getTargy());
+        stats[idx]->setStat(tempStat);
+    }
 }
 
 /**
@@ -83,6 +140,7 @@ void Naplo::frissit(Jatekos* j, bool nyert){
 void Naplo::urites(){
     for(size_t i = 0; i < n; i++)
         delete stats[i];
+    n = 0;
 }
 
 /**
@@ -92,6 +150,7 @@ void Naplo::urites(){
 */
 void Naplo::sort(){
     size_t max;
+    if(n==0) return;
     for(size_t i = 0; i < n-1; i++){
         max = i;
         for(size_t j = i+1; j < n; j++){
@@ -110,10 +169,14 @@ void Naplo::sort(){
  * Először rendezi a listát növekvő sorrendbe a sort() függvénnyel.
  * @param os - A stream, amire ki akarunk írni
  * */
-void Naplo::topkiir(std::ostream& os){
+void Naplo::topkiir(){
+    if(n == 0){
+        std::cout << "Nincs játékos a naplóban.\n";
+        return;
+    }
     sort(); ///< Rendezés
-    os << "A top 10 legjobb játékos:\n";
+    std::cout << "A top 10 legjobb játékos:\n";
     size_t max = (n >= 10) ? 10 : n;
     for(size_t i = 0; i < max; i++)
-        os << *stats[i] << "\n";
+        std::cout << *stats[i] << "\n";
 }

@@ -25,13 +25,13 @@ public:
 	 * @param nev - A játékos neve
 	 * @param *t - a tárgy, amit használ
 	 * */
-    Jatekos(String nev, Targy *t) : nev(nev), targy(t) {}
+    Jatekos(const String& n, Targy *t) : nev(n), targy(t) {}
 
 	/**
 	 * setItem - beállítja a (már létező) játékos tárgyát
 	 * @param *t - a tárgy, amit beállítunk neki
 	 * */
-	inline void setItem(Targy *t) { delete targy; targy = t; }
+	inline void setTargy(Targy *t) { targy = t; }
 
 	/**
 	* getNev - Visszaadja a játékos nevét
@@ -39,15 +39,17 @@ public:
 	String getNev() const {return nev;}
 
 	/**
-	* getTargy - Visszaadja a játékos tárgyának típusát.
-	* Ez lehet KO, PAPIR vagy OLLO
-	*/
-	targyak getTargyType() const {return targy->getTargy();}
-
-	/**
 	* getStat - visszaadja a játékos statisztikáját
 	*/
 	Stat getStat() const {return stat;}
+
+    void setStat(const Stat& s){
+        stat.setStat(s);
+    }
+
+    void setStat(const String& str){
+        stat.setStat(str);
+    }
 
 	/**
 	 * getTargy - visszaadja a játékos tárgyát
@@ -77,7 +79,7 @@ public:
 * @param j - A kiírandó játékos (statisztikája)
 */
 inline std::ostream& operator<<(std::ostream& os, const Jatekos& j){
-     return os << j.getNev() << " - " << j.getStat().getTaktika() << " (" << j.getStat().getTaktika().size() << ")";
+     return os << j.getNev() << " - " << j.getStat();
  }
 
 #endif // JATEKOS_HPP_INCLUDED

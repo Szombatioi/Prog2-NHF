@@ -35,31 +35,39 @@ class Naplo{
 	 * */
 	bool benneVan(const Jatekos& j) const;
 public:
+
 	/**
 	 * Konstruktor
 	 * @param size - Megadható a fix tömb mérete.
 	 * */
-	Naplo(size_t siz) : size(siz), n(0) {
+	Naplo(size_t siz = 0) : size(siz), n(0) {
         stats = new Jatekos*[size]; ///< Dinamikusan lefoglaljuk a kívánt méretű helyet
 	}
 
     /**
 	 * load - Betölti a naplóban tárolt játékosokat a naplo.txt fájlból
 	 * Ha nem létezik, üres lesz a Napló
+	 * @return A sikerességtől függően igaz / hamis
 	 * */
-	void load();
+	bool load();
 
 	/**
 	 * save - Elmenti a napló adatait a naplo.txt fájlba (felülírja)
 	 * Ha nem létezik a txt fájl, generál egyet.
+	 * @return A sikerességtől függően igaz / hamis
 	 * */
-	void save();
+	bool save();
 
 	/**
 	* getSize - a naplóban tárolt elemeket adja vissza
 	* @return n - Ahány ember benne van a naplóban
 	*/
 	size_t getSize() const {return n;}
+
+
+	size_t index(const Jatekos& j);
+
+    Jatekos* operator[](size_t i) {return stats[i];}
 
 	/**
 	 * hozzaad - hozzáad egy új játékost a naplóhoz.
@@ -83,7 +91,7 @@ public:
 	/**
 	 * topkiir - Kiírja a 10 legjobb játékos statisztikáját.
 	 * */
-	void topkiir(std::ostream& os);
+	void topkiir();
 
 	/**
 	* sort - rendezi a tömböt növekvő sorrendbe

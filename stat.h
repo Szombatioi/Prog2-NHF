@@ -24,11 +24,13 @@ public:
 	Stat() : gyozelmek(0), taktika("") {}
 
     int getGyozelmek() const {return gyozelmek;}
-    
+
 	/**
 	* getTaktika - visszaadja a játékos taktikáját
 	*/
-	String getTaktika() const {return taktika;}
+	String getTaktika() const;
+	void setStat(const Stat& s);
+	void setStat(const String& str);
 
 	/**
 	 * frissit - Frissíti a játékos statisztikáját
@@ -38,6 +40,7 @@ public:
 	void frissit(char T, bool nyert);
 };
 
+std::ostream& operator<<(std::ostream& os, const Stat& s);
 
 
 #endif

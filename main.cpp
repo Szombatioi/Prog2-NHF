@@ -11,116 +11,98 @@
 #include "ollo.hpp"
 #include "memtrace.h"
 #include "jatek.h"
+#include <time.h>
 using namespace std;
 
-#define MAIN
-//#define TESTING
+//#define MAIN
+#define TESTING
 
 /**
 * test1 - betöltés fájlból
-* Először egy nem létező fájlból olvasna, ekkor false értéket várunk.
-* Ezután a megfelelő fájból olvasna, ekkor azt várjuk, hogy sikerüljön.
+* Először egy nem létező fájlból olvasna, ekkor kivételt várunk.
+* Ezután a már létező fájból olvasna, ami üres, ekkor azt várjuk, hogy hamissal térjen vissza
+* Ezt követően a mentést próbáljuk meg, ekkor azt várjuk, hogy sikerüljön.
+* Végül
 */
 void test1(){
-//    Jatek jatekBetoltes;
-//    TEST(Load, "noFile"){
-//        EXPECT_THROW(jatekBetoltes.load("random.txt"), std::exception);
-//    } END
+    Naplo n;
+    Jatek jatekBetoltes(n);
+    TEST(Load, "noFile"){
+        EXPECT_THROW(jatekBetoltes.naplo.load(), const char*);
+    } END
 
-//    TEST(Load, "fileExists"){
-//        EXPECT_NO_THROW(jatekBetoltes.load("naplo.txt"));
-//    } END
+    TEST(Load, "fileExists"){
+        std::ofstream saveFile("naplo.txt"); ///< Ezzel a sorral létrejön a fájl, még akkor is, ha ezelőtt nem létezett, viszont üres!
+        saveFile.close();
+        EXPECT_EQ(false, jatekBetoltes.naplo.load());
+    } END
+
+    TEST(Save, "fileExists"){
+        jatekBetoltes.naplo.hozzaad(new Jatekos("Péter", NULL));
+        jatekBetoltes.naplo.hozzaad(new Jatekos("András", NULL));
+        jatekBetoltes.naplo.hozzaad(new Jatekos("József", NULL));
+        EXPECT_EQ(true, jatekBetoltes.naplo.save());
+    } END
+
+    TEST(Load, "NormalLoad"){
+        EXPECT_NO_THROW(jatekBetoltes.naplo.load());
+    } END
 }
 
 /**
-* test2 - Játékosok hozzáadása nyilvántartáshoz.
-* Először egy nem létező játékost ad hozzá, ekkor azt várjuk, hogy sikerüljön.
-* Ezután egy már létező játékos ad hozzá, ekkor kivételt várunk.
-* Végül azt várjuk, hogy túlindexelés miatt kivételt dobjon.
+* test2 - Játékosok hozzáadása nyilvántartáshoz, (napló bővítése), napló ürítése és a legjobbak kiírása.
+* Először egy nem létező játékost ad hozzá, ekkor azt várjuk, hogy sikerüljön, a program azt írja ki, hogy "Játékos felvéve".
+* Ezután egy már létező játékos ad hozzá, ekkor nem várunk semmit.
+* Ezt követően kiírjuk a top 10 (vagy annál kevesebb) legjobb játékost.
+* Végül ürítjük a naplót, majd ezt követően az ismételt kiírásnál azt várjuk, hogy azt írja ki a program, hogy "Nincs játékos a naplóban"
+* FIGYELEM: Ez a teszteset nem a gtest_lite-val fut.
 */
 void test2(){
-//    Naplo n(2);
-//    TEST(AddPlayer, "newPlayer"){
-//        Targy *t = new Ko("Kő");
-//        EXPECT_NO_THROW(n.hozzaad(new Jatekos(String("Peter"), t)));
-//        delete t;
-//    } END
-//
-//    TEST(AddPlayer, "existingPlayer"){
-//        Targy *t = new Ko("Kő");
-//        EXPECT_THROW(n.hozzaad(new Jatekos(String("Peter"), t)), std::exception);
-//        delete t;
-//    } END
-//
-//    TEST(AddPlayer, "outOfRange"){
-//        Targy *t = new Papir("Papír");
-//        ///Ő még beleférhet
-//        n.hozzaad(new Jatekos(String("Andras"), t));
-//        ///Ő már viszont nem
-//        EXPECT_THROW(n.hozzaad(new Jatekos(String("Jozsef"), t)), std::out_of_range);
-//        delete t;
-//    } END
+    Naplo n;
+    n.hozzaad(new Jatekos("Németh Orsolya", NULL)); ///< "Játékos felvéve"
+    n.hozzaad(new Jatekos("Németh Orsolya", NULL)); ///< Nincs kiírás, mert már létező játékos
+    n.topkiir();
+    n.urites();
+    n.topkiir();
 }
 
 /**
 * test3 - egy mérkőzés levezénylése
-* Ha nem érkezik kivétel, akkor jól levezényelt egy mérkőzést és jól frissítette a naplót
+* Először ugyanazt a játékost adjuk meg mindkétszer a játékosok bekérésénél, itt kivételt várunk.
+* Ezután ha nem érkezik kivétel (itt már különböző játékosokat adunk meg!), akkor jól levezényelt egy mérkőzést és jól frissítette a naplót
 */
 void test3(){
-//    Jatek j;
-//    j.load("naplo.txt");
-//    j.demonstrate();
-//    j.save("naplo.txt");
+    Naplo n;
+    Jatek jatek(n);
+    TEST(Demonstrate, SamePerson) {
+        std::cout << "FIGYELEM: Ugyanazt a nevet adja meg mindkét játékosnál!\n";
+        EXPECT_THROW(jatek.demonstrate(), const char*);
+    } END
+
+    TEST(Demonstrate, GoodVersion){
+        EXPECT_NO_THROW(jatek.demonstrate());
+    } END
 }
 
 int main()
 {
+    srand(time(NULL));
+    setlocale(LC_ALL, "hun"); ///CodeBlocksnál a konzol hibásan jeleníti meg a betűket, tesztelésre javasolt a Visual Studio használata vagy esetleg a Linuxon való futtatás
     #ifdef TESTING
-    setlocale(LC_ALL, "hun"); ///CodeBlocksnál a konzol hibásan jeleníti meg a betűket, tesztelésre javasolt a Visual Studio használata
     try{
-        int n;
-        cout << "Adja meg a teszteset számát: (1,2,3) ";
-        cin >> n;
-        switch(n){
-        case 1:
-            test1();
-            break;
-        case 2:
-            test2();
-            break;
-        case 3:
-            test3();
-            break;
-        default:
-            cout << "Hibás bemenet!";
-        }
+        test1();
+        test2();
+        test3();
     } catch(std::exception& e) {cout << e.what() << endl;}
     catch(...) {cout << "Nagy a baj" << endl;}
     #endif // TEST
 
     #ifdef MAIN
-    try{
-        Naplo n(1);
-        Jatekos *p1 = new Jatekos("Peter", new Ko());
-        Jatekos *p2 = new Jatekos("Andras", new Papir());
-        Jatekos *p3 = new Jatekos("Jozsef", new Ollo());
-        n.hozzaad(p1);
-        n.hozzaad(p2);
-        n.hozzaad(p3);
-        n.frissit(p1, true);
-        n.frissit(p1, false);
-        n.frissit(p1, true);
-        p1->setItem(new Papir());
-        n.frissit(p1, true);
-        n.frissit(p1, true);
-        std::cout << n.getSize(); //3 a bővítés miatt
-        Jatek jatek(&n);
-        jatek.save();
-    }catch(const char* s) {
-        std::cout << s << std::endl;
-    }
-    catch(...){
-        std::cout << "Error??" << "\n";
+    bool run = true;
+    Naplo n(1);
+    Jatek jatek(n);
+    while(run){
+        jatek.menu(run);
     }
     #endif // MAIN
     return 0;
