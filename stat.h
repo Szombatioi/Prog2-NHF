@@ -29,17 +29,28 @@ public:
 	* getTaktika - visszaadja a játékos taktikáját
 	*/
 	String getTaktika() const;
+
+	/**
+	 * setStat - átállítja a statisztikát egy meglévő statisztika alapján
+	 * @param s - A beállítandó statisztika
+	 */
 	void setStat(const Stat& s);
+
+	/**
+	 * setStat - átállítja a statisztikát egy String alapján
+	 * @param str - A taktika String
+	 */
 	void setStat(const String& str);
 
 	/**
-	 * frissit - Frissíti a játékos statisztikáját
-	 * @param T - milyen tárgyat használt
-	 * @param nyert - nyert-e a játékos
-	 * */
+	* frissit - Frissíti a játékos statisztikáját
+	* @param T - milyen tárgyat használt
+	* @param nyert - nyert-e a játékos
+	**/
 	void frissit(char T, bool nyert);
 };
 
+///<< operator kiíráshoz
 std::ostream& operator<<(std::ostream& os, const Stat& s);
 
 

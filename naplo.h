@@ -44,6 +44,12 @@ public:
         stats = new Jatekos*[size]; ///< Dinamikusan lefoglaljuk a kívánt méretű helyet
 	}
 
+	///Copy ctor
+	Naplo(const Naplo& naplo);
+
+	///=operátor
+    Naplo& operator=(const Naplo& naplo);
+
     /**
 	 * load - Betölti a naplóban tárolt játékosokat a naplo.txt fájlból
 	 * Ha nem létezik, üres lesz a Napló
@@ -64,10 +70,17 @@ public:
 	*/
 	size_t getSize() const {return n;}
 
-
+	/**
+	* index - egy játékos helyét adja meg a tömbben
+	* Ha nincs benne, -1-gyel tér vissza
+	* @param j - A keresett játékos
+	*/
 	size_t index(const Jatekos& j);
 
+	/// [] operátor indexeléshez
     Jatekos* operator[](size_t i) {return stats[i];}
+    /// konstans [] operátor indexeléshez
+    Jatekos* const operator[](size_t i) const {return stats[i];}
 
 	/**
 	 * hozzaad - hozzáad egy új játékost a naplóhoz.
@@ -96,11 +109,12 @@ public:
 	/**
 	* sort - rendezi a tömböt növekvő sorrendbe
 	* A top 10 kiírása előtt mindig rendez.
+	* A selection sort elvén alapszik.
 	*/
 	void sort();
 
 	///Destruktor
-	~Naplo() { urites(); delete[] stats; }
+	~Naplo() { urites(); delete[] stats;}
 };
 
 #endif // DIARY_H_INCLUDED

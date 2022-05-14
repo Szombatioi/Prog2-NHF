@@ -8,6 +8,24 @@
 #include <fstream>
 
 
+///Copy ctor
+Naplo::Naplo(const Naplo& naplo){
+    stats = new Jatekos*[(size=naplo.getSize())];
+    for(n = 0; n < naplo.getSize(); n++)
+        stats[n] = naplo[n]->copy();
+}
+
+///=operátor
+Naplo& Naplo::operator=(const Naplo& naplo){
+    if(this != &naplo){
+        delete[] stats;
+        stats = new Jatekos*[(size = naplo.getSize())];
+        for(n = 0; n < naplo.getSize(); n++)
+            stats[n] = naplo[n]->copy();
+    }
+    return *this;
+}
+
 /**
 * index - egy játékos helyét adja meg a tömbben
 * Ha nincs benne, -1-gyel tér vissza
@@ -16,7 +34,7 @@
 size_t Naplo::index(const Jatekos& j){
     for(size_t i = 0; i < n; i++){
         if(*stats[i] == j){
-            return i;
+            return i; ///<Ha megegyezik a két játékos, akkor visszatér az aktuális index-szel
         }
     }
     return -1;
@@ -25,35 +43,35 @@ size_t Naplo::index(const Jatekos& j){
 /**
  * load - Betölti a naplóban tárolt játékosokat a naplo.txt fájlból
  * Ha nem létezik, üres lesz a Napló
+ * @return A sikerességtől függően igaz / hamis
  * */
 bool Naplo::load(){
     std::ifstream loadFile;
     loadFile.open("naplo.txt");
-    if(!loadFile.is_open()) throw "Nem letezik a naplo.txt!";
+    if(!loadFile.is_open()) throw "Nem letezik a naplo.txt!"; ///<Ha nem létezik a fájl, akkor kivételt dob
 
     size_t len;
-    loadFile >> len;
+    loadFile >> len; ///<Az első sor a játékosok számát tartalmazza
     if(len==0){
-        std::cout << "Üres a fájl.\n";
+        std::cout << "Üres a fájl.\n"; ///< Üres fájl esetén nincs tömbváltoztatás
         loadFile.close();
         return false;
     }
 
-    urites();
-    delete[] stats;
-    stats = new Jatekos*[(size = len)];
+    urites();   ///< Kiürítjük a tömböt
+    delete[] stats; ///< Töröljük a tömböt
+    stats = new Jatekos*[(size = len)]; ///< Új méretet foglalunk
 
     String nev, taktika;
     for(n = 0; n < len; n++){
-        loadFile >> nev;
-        loadFile >> taktika;
-        std::cout << nev << " " << taktika << "\n";
+        loadFile >> nev; ///< Beolvassuk a nevét
+        loadFile >> taktika; ///< Beolvassuk a taktikáját
         Jatekos* tmp = new Jatekos(nev, NULL);
-        stats[n] = tmp;
+        stats[n] = tmp; ///< A napló megfelelő helyére betesszük a játékos pointerét
         if(taktika == "-"){
             stats[n]->setStat("");
         }
-        else stats[n]->setStat(taktika);
+        else stats[n]->setStat(taktika); ///< Beállítjuk a taktikáját
     }
     loadFile.close();
     std::cout << "Adatok betöltve\n";
@@ -63,14 +81,15 @@ bool Naplo::load(){
 /**
  * save - Elmenti a napló adatait a naplo.txt fájlba (felülírja)
  * Ha nem létezik a txt fájl, generál egyet.
+ * @return A sikerességtől függően igaz / hamis
  * */
 bool Naplo::save(){
-    sort();
+    sort(); ///< Rendezzük a tömböt növekvő sorrendbe
     std::ofstream saveFile("naplo.txt");
     if(saveFile.fail()) return false;
-    saveFile << n << "\n";
+    saveFile << n << "\n"; ///< Először a játékosok számát írjuk bele
     for(size_t i = 0; i < n; i++)
-        saveFile << stats[i]->getNev() << " " << stats[i]->getStat().getTaktika() << "\n";
+        saveFile << stats[i]->getNev() << " " << stats[i]->getStat().getTaktika() << "\n"; ///< Nev Taktika formátumban írjuk ki
     saveFile.close();
     std::cout << "Mentve\n";
     return true;
@@ -150,7 +169,7 @@ void Naplo::urites(){
 */
 void Naplo::sort(){
     size_t max;
-    if(n==0) return;
+    if(n==0) return; ///< Üres tömb esetén nincs mit csinálni
     for(size_t i = 0; i < n-1; i++){
         max = i;
         for(size_t j = i+1; j < n; j++){
@@ -171,12 +190,12 @@ void Naplo::sort(){
  * */
 void Naplo::topkiir(){
     if(n == 0){
-        std::cout << "Nincs játékos a naplóban.\n";
+        std::cout << "Nincs játékos a naplóban.\n"; ///< Ha nincs játékos a naplóban, akkor nincs értelme sort-olni vagy kiírni
         return;
     }
     sort(); ///< Rendezés
     std::cout << "A top 10 legjobb játékos:\n";
-    size_t max = (n >= 10) ? 10 : n;
+    size_t max = (n >= 10) ? 10 : n; ///< Ha nincs legalább 10 játékos, akkor csak az n méretéig megyünk el
     for(size_t i = 0; i < max; i++)
         std::cout << *stats[i] << "\n";
 }

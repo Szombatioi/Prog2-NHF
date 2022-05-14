@@ -10,10 +10,6 @@
 
 #include <iostream>
 
-#ifndef MEMTRACE
-#error "definialja projekt szinten a MEMTARCE makrot!"
-#endif // MEMTRACE
-
 /**
  * A String osztály.
  * A 'pData'-ban vannak a karakterek (a lezáró nullával együtt), 'len' a hossza.

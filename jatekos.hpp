@@ -27,6 +27,18 @@ public:
 	 * */
     Jatekos(const String& n, Targy *t) : nev(n), targy(t) {}
 
+    ///Copy ctor
+    Jatekos(const Jatekos& j){
+        nev = j.getNev();
+        targy = j.getTargy();
+        stat = j.getStat();
+    }
+
+    ///copy fv, napló feltöltéshez
+    Jatekos* copy() {
+        return new Jatekos(*this);
+    }
+
 	/**
 	 * setItem - beállítja a (már létező) játékos tárgyát
 	 * @param *t - a tárgy, amit beállítunk neki
@@ -43,10 +55,18 @@ public:
 	*/
 	Stat getStat() const {return stat;}
 
+	/**
+	 * setStat - Beállítja a játékos statisztikáját egy meglévő statisztika alapján
+	 * @param s - A statisztika, amit beállítunk
+	 */
     void setStat(const Stat& s){
         stat.setStat(s);
     }
 
+	/**
+	 * setStat - Beállítja a játékos statisztikáját egy String alapján
+	 * @param str - A taktika String
+	 */
     void setStat(const String& str){
         stat.setStat(str);
     }
@@ -56,6 +76,11 @@ public:
 	 * */
 	Targy* getTargy() const {return targy;}
 
+	/**
+	 * frissit - Frissíti a játékos statisztikáját
+	 * @param T - A tárgyának betűje
+	 * @param nyert - Megnyerte-e a játékos a mérkőzést
+	 */
 	void frissit(char T, bool nyert){
         stat.frissit(T, nyert);
 	}

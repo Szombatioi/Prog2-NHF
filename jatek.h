@@ -34,6 +34,10 @@ public:
 	*/
 	Jatek(Naplo& n) : naplo(n) {}
 
+	/**
+	 * getRandomTargy - egy véletlenszerű tárgyat ad vissza, játékosoknak ezeket állítjuk be
+	 * @return Targy* - A véletlenszerű tárgyat adja vissza
+	 */
 	Targy* getRandomTargy();
 
 	/**
@@ -43,6 +47,10 @@ public:
 	 * */
 	void demonstrate();
 
+	/**
+	 * menu - Kiírja a menü lehetőségeit és végre is hajtja őket
+	 * @param run - A főmenüben a while ciklus feltétele a run változó. Ha hamis az értéke, véget ér a program
+	 */
 	void menu(bool& run);
 };
 

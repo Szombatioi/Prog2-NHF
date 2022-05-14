@@ -1,14 +1,14 @@
 /**
     \file stat.cpp
-    Ebbe a f�jlba ker�l a Statisztika oszt�ly tagf�ggv�nyeinek megval�s�t�sa.
+    Ebbe a fájlba kerül a Statisztika osztály tagfüggvényeinek megvalósítása.
 */
 
 #include "stat.h"
 
 /**
-* frissit - Friss�ti a j�t�kos statisztik�j�t
-* @param T - milyen t�rgyat haszn�lt
-* @param nyert - nyert-e a j�t�kos
+* frissit - Frissíti a játékos statisztikáját
+* @param T - milyen tárgyat használt
+* @param nyert - nyert-e a játékos
 **/
 void Stat::frissit(char T, bool nyert){
     if(nyert){
@@ -28,19 +28,30 @@ void Stat::frissit(char T, bool nyert){
     }
 }
 
+/**
+* getTaktika - visszaadja a játékos taktikáját
+*/
 String Stat::getTaktika() const {
-    if(taktika == "") return "-";
+    if(taktika == "") return "-"; ///< Ha nincs elmentett taktikája, akkor nem '-' jelet adunk vissza
     return taktika;
 }
 
+/**
+ * setStat - átállítja a statisztikát egy meglévő statisztika alapján
+ * @param s - A beállítandó statisztika
+ */
 void Stat::setStat(const Stat& s){
     gyozelmek = s.getGyozelmek();
     taktika = s.getTaktika();
 }
 
+/**
+ * setStat - átállítja a statisztikát egy String alapján
+ * @param str - A taktika String
+ */
 void Stat::setStat(const String& str){
     taktika = str;
-    if(str == "-") gyozelmek = 0;
+    if(str == "-") gyozelmek = 0; ///<Ha nincs tárolt taktikája, akkor 0 értéket állít be
     else gyozelmek = str.size();
 }
 
