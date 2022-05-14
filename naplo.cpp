@@ -4,6 +4,31 @@
 */
 
 #include "naplo.h"
+#include <iostream>
+#include <fstream>
+
+/**
+ * load - Betölti a naplóban tárolt játékosokat a naplo.txt fájlból
+ * Ha nem létezik, üres lesz a Napló
+ * */
+void Naplo::load(){
+    std::ifstream loadFile("naplo.txt");
+    if(loadFile.fail()) throw "Nem letezik a naplo.txt!";
+    loadFile.close();
+}
+
+/**
+ * save - Elmenti a napló adatait a naplo.txt fájlba (felülírja)
+ * Ha nem létezik a txt fájl, generál egyet.
+ * */
+void Naplo::save(){
+    std::ofstream saveFile("naplo.txt");
+    saveFile << n << "\n";
+    for(size_t i = 0; i < n; i++)
+        saveFile << *stats[i] << "\n";
+    saveFile.close();
+}
+
 
 /**
 * benneVan - Eldönti, hogy benne van-e egy játékos már a naplóban.

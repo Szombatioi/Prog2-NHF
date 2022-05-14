@@ -33,17 +33,8 @@ public:
 	*/
 	Jatek(Naplo* n) {naplo = n;}
 
-	/**
-	 * load - Betölti a naplóban tárolt játékosokat a naplo.txt fájlból
-	 * Ha nem létezik, üres lesz a Napló
-	 * */
-	void load();
-
-	/**
-	 * save - Elmenti a napló adatait a naplo.txt fájlba (felülírja)
-	 * Ha nem létezik a txt fájl, generál egyet.
-	 * */
-	void save();
+	void load() {naplo->load();}
+	void save() {naplo->save();}
 
 	/**
 	 * demonstrate - Demonstrál egy mérkőzést.

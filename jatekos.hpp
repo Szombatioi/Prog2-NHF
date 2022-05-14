@@ -31,7 +31,7 @@ public:
 	 * setItem - beállítja a (már létező) játékos tárgyát
 	 * @param *t - a tárgy, amit beállítunk neki
 	 * */
-	inline void setItem(Targy *t) { delete[] targy; targy = t; }
+	inline void setItem(Targy *t) { delete targy; targy = t; }
 
 	/**
 	* getNev - Visszaadja a játékos nevét

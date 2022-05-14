@@ -7,8 +7,14 @@
 #include "jatekos.hpp"
 #include "naplo.h"
 #include "ko.hpp"
+#include "papir.hpp"
+#include "ollo.hpp"
 #include "memtrace.h"
+#include "jatek.h"
 using namespace std;
+
+#define MAIN
+//#define TESTING
 
 /**
 * test1 - betöltés fájlból
@@ -69,52 +75,53 @@ void test3(){
 
 int main()
 {
+    #ifdef TESTING
+    setlocale(LC_ALL, "hun"); ///CodeBlocksnál a konzol hibásan jeleníti meg a betűket, tesztelésre javasolt a Visual Studio használata
+    try{
+        int n;
+        cout << "Adja meg a teszteset számát: (1,2,3) ";
+        cin >> n;
+        switch(n){
+        case 1:
+            test1();
+            break;
+        case 2:
+            test2();
+            break;
+        case 3:
+            test3();
+            break;
+        default:
+            cout << "Hibás bemenet!";
+        }
+    } catch(std::exception& e) {cout << e.what() << endl;}
+    catch(...) {cout << "Nagy a baj" << endl;}
+    #endif // TEST
 
-
-//    setlocale(LC_ALL, "hun"); ///CodeBlocksnál a konzol hibásan jeleníti meg a betûket, tesztelésre javasolt a Visual Studio használata
-//    try{
-//        int n;
-//        cin >> n;
-//        switch(n){
-//        case 1:
-//            test1();
-//            break;
-//        case 2:
-//            test2();
-//            break;
-//        case 3:
-//            test3();
-//            break;
-//        default:
-//            cout << "Hibás bemenet!";
-//        }
-//    } catch(std::exception& e) {cout << e.what() << endl;}
-//    catch(...) {cout << "Nagy a baj" << endl;}
-
+    #ifdef MAIN
     try{
         Naplo n(1);
-        Jatekos* p = new Jatekos(String("Peter"), new Ko());    //naplo torli ot!!
-        n.hozzaad(p);
-        n.topkiir(std::cout);
-        std::cout << "uj kor\n";
-        n.frissit(p, true);
-        n.topkiir(std::cout);
-        std::cout << "uj kor\n";
-        n.frissit(p, false);
-        n.topkiir(std::cout);
-
-        Jatekos* p2 = new Jatekos(String("Andras"), new Ko());
+        Jatekos *p1 = new Jatekos("Peter", new Ko());
+        Jatekos *p2 = new Jatekos("Andras", new Papir());
+        Jatekos *p3 = new Jatekos("Jozsef", new Ollo());
+        n.hozzaad(p1);
         n.hozzaad(p2);
-        n.frissit(p2, true);
-        n.frissit(p2, true);
-        n.topkiir(std::cout);
-
+        n.hozzaad(p3);
+        n.frissit(p1, true);
+        n.frissit(p1, false);
+        n.frissit(p1, true);
+        p1->setItem(new Papir());
+        n.frissit(p1, true);
+        n.frissit(p1, true);
+        std::cout << n.getSize(); //3 a bővítés miatt
+        Jatek jatek(&n);
+        jatek.save();
     }catch(const char* s) {
         std::cout << s << std::endl;
     }
     catch(...){
         std::cout << "Error??" << "\n";
     }
-
+    #endif // MAIN
     return 0;
 }

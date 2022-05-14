@@ -43,6 +43,24 @@ public:
         stats = new Jatekos*[size]; ///< Dinamikusan lefoglaljuk a kívánt méretű helyet
 	}
 
+    /**
+	 * load - Betölti a naplóban tárolt játékosokat a naplo.txt fájlból
+	 * Ha nem létezik, üres lesz a Napló
+	 * */
+	void load();
+
+	/**
+	 * save - Elmenti a napló adatait a naplo.txt fájlba (felülírja)
+	 * Ha nem létezik a txt fájl, generál egyet.
+	 * */
+	void save();
+
+	/**
+	* getSize - a naplóban tárolt elemeket adja vissza
+	* @return n - Ahány ember benne van a naplóban
+	*/
+	size_t getSize() const {return n;}
+
 	/**
 	 * hozzaad - hozzáad egy új játékost a naplóhoz.
 	 * Először megnézi, hogy benne van-e, ha nincs, hozzáadja, ha igen, akkor nem csinál semmit
