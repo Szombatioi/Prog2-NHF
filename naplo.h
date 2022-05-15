@@ -8,6 +8,7 @@
 #define NAPLO_H_INCLUDED
 
 #include "jatekos.hpp"
+#include "memtrace.h"
 
 /**
 * BOOL - saját logikai típus mérkőzések lezárására.
@@ -42,6 +43,7 @@ public:
 	 * */
 	Naplo(size_t siz = 0) : size(siz), n(0) {
         stats = new Jatekos*[size]; ///< Dinamikusan lefoglaljuk a kívánt méretű helyet
+        //stats = NULL;
 	}
 
 	///Copy ctor
@@ -114,7 +116,7 @@ public:
 	void sort();
 
 	///Destruktor
-	~Naplo() { urites(); delete[] stats;}
+	~Naplo() { urites(); delete[] stats; }
 };
 
 #endif // DIARY_H_INCLUDED

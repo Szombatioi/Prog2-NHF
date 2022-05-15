@@ -13,6 +13,7 @@
 #include "papir.hpp"
 #include "ollo.hpp"
 #include "naplo.h"
+#include "memtrace.h"
 #include <fstream>
 
 /**

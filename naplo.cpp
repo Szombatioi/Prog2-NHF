@@ -18,6 +18,7 @@ Naplo::Naplo(const Naplo& naplo){
 ///=operátor
 Naplo& Naplo::operator=(const Naplo& naplo){
     if(this != &naplo){
+        urites();
         delete[] stats;
         stats = new Jatekos*[(size = naplo.getSize())];
         for(n = 0; n < naplo.getSize(); n++)

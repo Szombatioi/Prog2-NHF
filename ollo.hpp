@@ -22,6 +22,9 @@ public:
 	 * */
 	Ollo() : Targy("Olló"), Counter(KO), Self(OLLO) {}
 
+	///copy függvény
+	Ollo* copy(){return new Ollo();}
+
 	/**
 	* getTargy - visszaadja a tárgyat
 	*/

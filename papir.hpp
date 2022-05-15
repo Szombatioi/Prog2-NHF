@@ -23,6 +23,9 @@ public:
 	 * */
 	Papir() : Targy("Papír"), Counter(OLLO), Self(PAPIR) {}
 
+	///copy függvény
+	Papir* copy() {return new Papir();}
+
 	/**
 	* getTargy - visszaadja a tárgyat
 	*/

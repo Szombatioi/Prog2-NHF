@@ -27,8 +27,13 @@ public:
 	 * */
 	Targy(const String& nev) : nev(nev) {}
 
+	Targy(const Targy& targy) {nev = targy.getNev();}
+
 	///A saját tárgy típusát adja vissza
 	virtual targyak getSelf() const = 0;
+
+	///copy függvény
+	virtual Targy* copy() = 0;
 
 	///A tárgyat legyőző rágy típusát adja vissza
 	virtual targyak getCounter() const = 0;

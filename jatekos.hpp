@@ -9,6 +9,7 @@
 #include "string5.h"
 #include "targy.hpp"
 #include "stat.h"
+#include "memtrace.h"
 
 /**
 * A Játékos osztály.
@@ -30,7 +31,7 @@ public:
     ///Copy ctor
     Jatekos(const Jatekos& j){
         nev = j.getNev();
-        targy = j.getTargy();
+        targy = j.getTargy()->copy();
         stat = j.getStat();
     }
 

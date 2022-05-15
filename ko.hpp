@@ -26,6 +26,9 @@ public:
 	 * */
 	Ko() : Targy("Kő"), Counter(PAPIR), Self(KO) {}
 
+	///copy függvény
+	Ko* copy(){return new Ko();}
+
 	/**
 	* getTargy - visszaadja a tárgyat
 	*/
